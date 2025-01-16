@@ -1,4 +1,4 @@
-# Competitive-Coding-Archives-
+# Competitive-Coding-Archives
 These are the solutions and archive of the problems I have solved in my CP journey.
 
 I regularly practice CP on leetcode, geeksforgeeks and more.
