@@ -1,39 +1,29 @@
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
-        # Handle edge cases
         if numerator == 0:
             return "0"
-        if denominator == 0:
-            return ""
 
-        # Initialize result and check for negative sign
-        result = ""
+        fraction = []
         if (numerator < 0) ^ (denominator < 0):
-            result += "-"
-        numerator, denominator = abs(numerator), abs(denominator)
+            fraction.append("-")
 
-        # Integer part of the result
-        result += str(numerator // denominator)
+        dividend = abs(numerator)
+        divisor = abs(denominator)
+        fraction.append(str(dividend // divisor))
+        remainder = dividend % divisor
+        if remainder == 0:
+            return "".join(fraction)
 
-        # Check if there is a fractional part
-        if numerator % denominator == 0:
-            return result
-
-        result += "."
-
-        # Use a dictionary to store the position of each remainder
-        remainder_dict = {}
-        remainder = numerator % denominator
-
-        # Keep adding the remainder to the result until it repeats or the remainder becomes 0
-        while remainder != 0 and remainder not in remainder_dict:
-            remainder_dict[remainder] = len(result)
+        fraction.append(".")
+        map_dict = {}
+        while remainder != 0:
+            if remainder in map_dict:
+                fraction.insert(map_dict[remainder], "(")
+                fraction.append(")")
+                break
+            map_dict[remainder] = len(fraction)
             remainder *= 10
-            result += str(remainder // denominator)
-            remainder %= denominator
+            fraction.append(str(remainder // divisor))
+            remainder %= divisor
 
-        # Check if there is a repeating part
-        if remainder in remainder_dict:
-            result = result[:remainder_dict[remainder]] + "(" + result[remainder_dict[remainder]:] + ")"
-
-        return result
+        return "".join(fraction)
