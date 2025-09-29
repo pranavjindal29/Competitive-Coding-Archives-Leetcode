@@ -1,12 +1,14 @@
 class Solution:
-    def minScoreTriangulation(self, values: List[int]) -> int:
-        @cache
-        def dp(pos1: int, pos2: int) -> int:
-            if pos2 - pos1 <= 1:
-                return 0
-            ans = inf
-            for pos in range(pos1 + 1, pos2):
-                ans = min(ans, dp(pos1, pos) + dp(pos, pos2) + values[pos1] * values[pos2] * values[pos])
-            return ans
+    def minScoreTriangulation(self, v: List[int]) -> int:
+        n=len(v)
+        if n==3: return v[0]*v[1]*v[2]
+        dp=[[0]*n for _ in range(n-1)]
 
-        return dp(0, len(values) - 1)
+        for d in range(2, n):
+            for i in range(n-d):
+                j=i+d
+                w, e=1<<32, v[i]*v[j]
+                for k in range(i+1, j):
+                    w=min(w, e*v[k]+dp[i][k]+dp[k][j])
+                dp[i][j]=w
+        return dp[0][-1]
